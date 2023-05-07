@@ -38,3 +38,8 @@ out/
 
 ## 환경 변수 세팅 ###
 .env
+
+## restdocs 관련
+
+src/docs/**
+src/main/resources/static/docs/**

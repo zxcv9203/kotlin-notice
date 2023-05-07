@@ -1,8 +1,11 @@
 package com.example.notice.global.model
 
+import com.fasterxml.jackson.annotation.JsonInclude
+
 data class ApiResponse<T>(
     val status: Int,
     val message: String? = "",
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     val body: T? = null
 ) {
     companion object {
@@ -16,6 +19,12 @@ data class ApiResponse<T>(
                 status = status,
                 message = message,
                 body = body
+            )
+
+        fun <T> success(status: Int, message: String?): ApiResponse<T> =
+            ApiResponse(
+                status = status,
+                message = message,
             )
     }
 }

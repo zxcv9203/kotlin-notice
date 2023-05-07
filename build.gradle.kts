@@ -5,7 +5,6 @@ plugins {
     id("org.springframework.boot") version "3.0.6"
     id("io.spring.dependency-management") version "1.1.0"
     id("org.asciidoctor.jvm.convert") version "3.3.2"
-    id("org.jlleitschuh.gradle.ktlint") version "10.2.0"
 
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
@@ -59,18 +58,17 @@ tasks {
     }
 
     asciidoctor {
-        inputs.dir(snippetsDir)
         dependsOn(test)
+        inputs.dir(snippetsDir)
     }
 
     bootJar {
+        dependsOn("copyDocument")
+    }
+
+    register<Copy>("copyDocument") {
         dependsOn(asciidoctor)
-        from("${asciidoctor.get().outputDir}/index.html") {
-            into("static/docs")
-        }
+        from("${asciidoctor.get().outputDir}/index.html")
+        into("src/main/resources/static/docs")
     }
 }
-
-
-
-
