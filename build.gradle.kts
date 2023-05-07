@@ -22,7 +22,7 @@ repositories {
 
 extra["testcontainersVersion"] = "1.18.0"
 val asciidoctorExt: Configuration by configurations.creating
-val snippetsDir by extra { "build/generated-snippets" }
+val snippetsDir by extra { file("build/generated-snippets") }
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -34,6 +34,9 @@ dependencies {
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
+    // mockk
+    testImplementation("io.mockk:mockk:1.13.5")
+    testImplementation("com.ninja-squad:springmockk:4.0.2")
 }
 
 dependencyManagement {
@@ -50,19 +53,16 @@ tasks {
     }
     withType<Test> {
         useJUnitPlatform()
+    }
+    test {
         outputs.dir(snippetsDir)
     }
+
     asciidoctor {
         inputs.dir(snippetsDir)
-        configurations("asciidoctorExt")
         dependsOn(test)
-        baseDirFollowsSourceFile()
     }
-    register<Copy>("copyDocs") {
-        dependsOn(asciidoctor)
-        from("${asciidoctor.get().outputDir}/index.html")
-        into("src/main/resources/static/docs")
-    }
+
     bootJar {
         dependsOn(asciidoctor)
         from("${asciidoctor.get().outputDir}/index.html") {
