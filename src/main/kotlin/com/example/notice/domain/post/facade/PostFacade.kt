@@ -22,8 +22,9 @@ class PostFacade(
 ) {
 
     fun findAll() : PostResponses{
-        // 게시글 정보 반환
-        return PostResponses(listOf())
+        val posts = postService.findAll()
+
+        return PostResponses(posts)
     }
 
     fun findById(postId: Long) : PostResponse{
