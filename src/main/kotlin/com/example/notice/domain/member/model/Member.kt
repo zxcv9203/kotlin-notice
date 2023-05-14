@@ -1,5 +1,6 @@
 package com.example.notice.domain.member.model
 
+import com.example.notice.global.model.BaseEntity
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -12,4 +13,4 @@ data class Member(
     val id: Long = 0L,
     val name: String,
     val password: String,
-)
+) : BaseEntity()
