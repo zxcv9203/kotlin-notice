@@ -13,6 +13,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext
 import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import kotlin.text.Charsets.UTF_8
 
 @WebMvcTest(PostController::class)
+@MockkBean(JpaMetamodelMappingContext::class)
 @DisplayName("PostController")
 class PostControllerTest @Autowired constructor(
     @MockkBean private val postFacade: PostFacade,
