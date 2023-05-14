@@ -1,4 +1,7 @@
 package com.example.notice.domain.member.repository
 
-class MemberRepository {
+import com.example.notice.domain.member.model.Member
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface MemberRepository : JpaRepository<Member, Long>{
 }
