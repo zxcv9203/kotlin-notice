@@ -1,10 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
 
 
 plugins {
     id("org.springframework.boot") version "3.0.6"
     id("io.spring.dependency-management") version "1.1.0"
     id("org.asciidoctor.jvm.convert") version "3.3.2"
+    id("com.google.cloud.tools.jib") version "3.1.4"
 
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
@@ -36,6 +38,7 @@ dependencies {
     // mockk
     testImplementation("io.mockk:mockk:1.13.5")
     testImplementation("com.ninja-squad:springmockk:4.0.2")
+    implementation(kotlin("stdlib-jdk8"))
 }
 
 dependencyManagement {
@@ -70,5 +73,28 @@ tasks {
         dependsOn(asciidoctor)
         from("${asciidoctor.get().outputDir}/index.html")
         into("src/main/resources/static/docs")
+    }
+}
+
+jib {
+    from {
+        image = "amazoncorretto:17.0.4-al2"
+        platforms {
+            platform {
+                architecture = "arm64"
+                os = "linux"
+            }
+            platform {
+                architecture = "amd64"
+                os = "linux"
+            }
+        }
+    }
+    to {
+        image = "zxcv9203/${project.name}"
+        tags = setOf(project.version.toString().toLowerCaseAsciiOnly())
+    }
+    container {
+        ports = listOf("8080")
     }
 }
