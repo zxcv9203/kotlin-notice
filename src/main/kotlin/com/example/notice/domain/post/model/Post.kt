@@ -1,14 +1,20 @@
 package com.example.notice.domain.post.model
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import com.example.notice.global.model.BaseEntity
+import jakarta.persistence.*
 
 @Entity
 data class Post(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: Long,
-) {
-}
+    val id: Long = 0,
+
+    @Column(name = "member_id")
+    val memberId: Long,
+
+    @Column(name = "title")
+    val title: String,
+
+    @Column(name = "content")
+    val content: String,
+) : BaseEntity()
