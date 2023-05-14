@@ -7,6 +7,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.0"
     id("org.asciidoctor.jvm.convert") version "3.3.2"
     id("com.google.cloud.tools.jib") version "3.1.4"
+    id("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
 
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
@@ -24,11 +25,17 @@ repositories {
 extra["testcontainersVersion"] = "1.18.0"
 val asciidoctorExt: Configuration by configurations.creating
 val snippetsDir by extra { file("build/generated-snippets") }
+val queryDslVersion = "5.0.0"
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    // queryDSL
+    implementation("com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta")
+    annotationProcessor("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties[queryDslVersion]}:jakarta")
+
+
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     runtimeOnly("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -39,6 +46,7 @@ dependencies {
     testImplementation("io.mockk:mockk:1.13.5")
     testImplementation("com.ninja-squad:springmockk:4.0.2")
     implementation(kotlin("stdlib-jdk8"))
+
 }
 
 dependencyManagement {
