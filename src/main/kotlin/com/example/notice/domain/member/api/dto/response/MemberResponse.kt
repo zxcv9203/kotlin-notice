@@ -1,6 +1,8 @@
 package com.example.notice.domain.member.api.dto.response
 
-data class MemberResponse(
+import com.querydsl.core.annotations.QueryProjection
+
+data class MemberResponse @QueryProjection constructor(
     val id: Long,
     val nickName: String
 )
