@@ -9,9 +9,11 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.1.4"
     id("com.ewerk.gradle.plugins.querydsl") version "1.0.10"
 
+    kotlin("kapt") version "1.7.22"
     kotlin("jvm") version "1.7.22"
     kotlin("plugin.spring") version "1.7.22"
     kotlin("plugin.jpa") version "1.7.22"
+    idea
 }
 
 group = "com.example"
@@ -33,7 +35,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     // queryDSL
     implementation("com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta")
-    annotationProcessor("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties[queryDslVersion]}:jakarta")
+    kapt("com.querydsl:querydsl-apt:${queryDslVersion}:jakarta")
 
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -97,5 +99,12 @@ jib {
     }
     container {
         ports = listOf("8080")
+    }
+}
+idea {
+    module {
+        val kaptMain = file("build/generated/source/kapt/main")
+        sourceDirs.add(kaptMain)
+        generatedSourceDirs.add(kaptMain)
     }
 }
