@@ -21,18 +21,17 @@ class PostFacade(
     private val memberService: MemberService
 ) {
 
-    fun findAll() : PostResponses{
+    fun findAll(): PostResponses {
         val posts = postService.findAll()
 
         return PostResponses(posts)
     }
 
-    fun findById(postId: Long) : PostResponse{
-        // 게시글 단일 정보 반환
-        return PostResponse(0, MemberResponse(0, ""), "", "", LocalDateTime.now(), LocalDateTime.now())
+    fun findById(postId: Long): PostResponse {
+        return postService.findById(postId)
     }
 
-    fun save(request: PostSaveRequest) : IdResponse{
+    fun save(request: PostSaveRequest): IdResponse {
         val memberId = memberService.save(request.toMemberSaveRequest())
 
         val postId = postService.save(request, memberId)
@@ -46,7 +45,14 @@ class PostFacade(
         // 업데이트 처리
 
         // 게시글 정보 반환
-        return PostResponse(0, MemberResponse(0, ""), "", "", LocalDateTime.now(), LocalDateTime.now())
+        return PostResponse(
+            0,
+            MemberResponse(0, ""),
+            "",
+            "",
+            LocalDateTime.now(),
+            LocalDateTime.now()
+        )
     }
 
     fun deleteById(request: PostDeleteRequest, postId: Long) {

@@ -1,9 +1,11 @@
 package com.example.notice.domain.post.service
 
 import com.example.notice.domain.post.controller.dto.request.PostSaveRequest
+import com.example.notice.domain.post.controller.dto.response.PostResponse
 import com.example.notice.domain.post.controller.dto.response.PostSimpleResponse
 import com.example.notice.domain.post.converter.toEntity
 import com.example.notice.domain.post.repository.PostRepository
+import com.example.notice.global.exception.NotExistPostException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -23,5 +25,13 @@ class PostService(
     @Transactional(readOnly = true)
     fun findAll() : List<PostSimpleResponse> {
         return postRepository.findPostSimpleResponses()
+    }
+
+    @Transactional(readOnly = true)
+    fun findById(postId: Long) : PostResponse {
+        val post = postRepository.findPostResponse(postId)
+
+        return post?.let { post }
+            ?: throw NotExistPostException(postId)
     }
 }
