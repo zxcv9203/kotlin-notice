@@ -1,11 +1,11 @@
 package com.example.notice.global.exception.handler
 
+import com.example.notice.global.exception.InvalidPasswordException
 import com.example.notice.global.exception.NotExistPostException
 import com.example.notice.global.model.ApiResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR
-import org.springframework.http.HttpStatus.NOT_FOUND
+import org.springframework.http.HttpStatus.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -25,6 +25,23 @@ class GlobalExceptionHandler {
                 "요청한 게시글을 찾을 수 없습니다."
             ),
             NOT_FOUND
+        )
+    }
+
+    @ExceptionHandler(InvalidPasswordException::class)
+    fun responseInvalidPassword(e: InvalidPasswordException): ResponseEntity<ApiResponse<Unit>> {
+        log.warn(
+            "요청 password : " + e.request +
+                    " 응답 password : " + e.save +
+                    "\n" + e.stackTraceToString()
+        )
+
+        return ResponseEntity(
+            ApiResponse.error(
+                FORBIDDEN.value(),
+                "패스워드를 확인해주세요"
+            ),
+            FORBIDDEN
         )
     }
 
