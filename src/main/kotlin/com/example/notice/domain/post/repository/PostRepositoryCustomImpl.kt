@@ -28,6 +28,7 @@ class PostRepositoryCustomImpl(
                 )
             )
             .from(post)
+            .orderBy(post.createdAt.desc())
             .fetch()
     }
 
