@@ -1,5 +1,6 @@
 package com.example.notice.domain.post.service
 
+import com.example.notice.domain.post.controller.dto.request.PostDeleteRequest
 import com.example.notice.domain.post.controller.dto.request.PostSaveRequest
 import com.example.notice.domain.post.controller.dto.request.PostUpdateRequest
 import com.example.notice.domain.post.controller.dto.response.PostResponse
@@ -44,6 +45,12 @@ class PostService(
         post.update(request.title, request.content)
 
         return post
+    }
+
+    fun deleteById(request: PostDeleteRequest, postId: Long) {
+        this.authPost(request.password, postId)
+
+        postRepository.deleteById(postId)
     }
 
     fun authPost(password: String, postId: Long): Post {

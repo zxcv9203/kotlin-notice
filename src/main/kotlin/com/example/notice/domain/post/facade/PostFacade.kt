@@ -56,9 +56,6 @@ class PostFacade(
     }
 
     fun deleteById(request: PostDeleteRequest, postId: Long) {
-        // 게시글 및 패스워드 확인
-
-        // 삭제 처리
-        println("aaa")
+        postService.deleteById(request, postId)
     }
 }
