@@ -1,7 +1,6 @@
 package com.example.notice.domain.post.repository
 
 import com.example.notice.domain.member.api.dto.response.QMemberResponse
-import com.example.notice.domain.member.model.QMember.member
 import com.example.notice.domain.post.controller.dto.response.PostResponse
 import com.example.notice.domain.post.controller.dto.response.PostSimpleResponse
 import com.example.notice.domain.post.controller.dto.response.QPostResponse
@@ -21,16 +20,14 @@ class PostRepositoryCustomImpl(
                     post.id,
                     post.title,
                     QMemberResponse(
-                        member.id,
-                        member.name
+                        post.member.id,
+                        post.member.name
                     ),
                     post.createdAt,
                     post.updatedAt
                 )
             )
             .from(post)
-            .join(member)
-            .on(post.memberId.eq(member.id))
             .fetch()
     }
 
@@ -40,8 +37,8 @@ class PostRepositoryCustomImpl(
                 QPostResponse(
                     post.id,
                     QMemberResponse(
-                        member.id,
-                        member.name
+                        post.member.id,
+                        post.member.name
                     ),
                     post.title,
                     post.content,
@@ -50,10 +47,9 @@ class PostRepositoryCustomImpl(
                 )
             )
             .from(post)
-            .join(member)
-            .on(post.memberId.eq(member.id))
             .where(eqPostId(postId))
             .fetchOne()
     }
-    private fun eqPostId(postId: Long) : BooleanExpression = post.id.eq(postId)
+
+    private fun eqPostId(postId: Long): BooleanExpression = post.id.eq(postId)
 }

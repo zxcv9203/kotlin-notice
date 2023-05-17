@@ -12,7 +12,6 @@ import com.example.notice.domain.post.service.PostService
 import com.example.notice.global.model.IdResponse
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
 
 @Component
 @Transactional
@@ -41,17 +40,18 @@ class PostFacade(
 
     fun update(request: PostUpdateRequest, postId: Long): PostResponse {
         // 게시글 및 패스워드 확인
+        val post = postService.update(request, postId)
 
-        // 업데이트 처리
-
-        // 게시글 정보 반환
         return PostResponse(
-            0,
-            MemberResponse(0, ""),
-            "",
-            "",
-            LocalDateTime.now(),
-            LocalDateTime.now()
+            id = post.id,
+            member = MemberResponse(
+                id = post.id,
+                nickName = post.member.name,
+            ),
+            title = post.title,
+            content = post.content,
+            createdAt = post.createdAt,
+            updatedAt = post.updatedAt,
         )
     }
 
