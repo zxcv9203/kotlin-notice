@@ -1,5 +1,6 @@
 package com.example.notice.domain.post.model
 
+import com.example.notice.domain.member.model.Member
 import com.example.notice.global.model.BaseEntity
 import jakarta.persistence.*
 
@@ -9,12 +10,18 @@ data class Post(
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     val id: Long = 0,
 
-    @Column(name = "member_id")
-    val memberId: Long,
-
     @Column(name = "title")
-    val title: String,
+    var title: String,
 
     @Column(name = "content")
-    val content: String,
-) : BaseEntity()
+    var content: String,
+    @JoinColumn(name = "member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    val member: Member
+) : BaseEntity() {
+
+    fun update(title: String, content: String) {
+        this.title = title
+        this.content = content
+    }
+}
